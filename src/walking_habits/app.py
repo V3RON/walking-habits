@@ -16,4 +16,4 @@ with server.app_context():
     from . import schedule
 
     # configure the Dash instance's layout
-    app.layout = main_layout_sidebar()
+    app.layout = main_layout_header()

@@ -27,7 +27,7 @@ def create_dash(server):
         name=__package__,
         server=server,
         suppress_callback_exceptions=True,
-        **get_dash_args_from_flask_config(server.config),
+        **get_dash_args_from_flask_config(server.config)
     )
 
     # Update the Flask config a default "TITLE" and then with any new Dash

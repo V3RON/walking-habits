@@ -17,7 +17,7 @@ def make_brand(**kwargs):
         className="brand",
         children=dcc.Link(
             href=get_url(""),
-            children=html.H1([fa("far fa-chart-bar"), server.config["TITLE"]]),
+            children=html.H1([fa("fas fa-walking mr-4 ml-4"), server.config["TITLE"]]),
         ),
         **kwargs,
     )
@@ -31,10 +31,7 @@ def make_header(**kwargs):
         color="dark",
         dark=True,
         children=[
-            make_brand(),
-            html.Ul(
-                id=server.config["NAVBAR_CONTAINER_ID"], className="navbar-nav ml-auto"
-            ),
+            make_brand()
         ],
         **kwargs,
     )

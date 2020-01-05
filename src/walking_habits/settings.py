@@ -5,7 +5,7 @@
 
 # Your App's title. The value of this parameter will be propagated into
 # `app.title`
-TITLE = "walking-habits"
+TITLE = "Walking habits"
 
 # The value of this parameter will be propagated into both
 # `app.scripts.config.serve_locally` and `app.css.config.serve_locally`
@@ -37,7 +37,9 @@ ROUTES_PATHNAME_PREFIX = None
 EXTERNAL_STYLESHEETS = []
 
 # Externally hosted Javascript files go in here.
-EXTERNAL_SCRIPTS = []
+EXTERNAL_SCRIPTS = [
+    'https://kit.fontawesome.com/83624c61a3.js'
+]
 
 
 #
