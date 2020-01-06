@@ -1,3 +1,5 @@
+import os
+
 from . import create_flask, create_dash
 from .layouts import main_layout_header, main_layout_sidebar
 
@@ -8,7 +10,6 @@ server = create_flask()
 # The Dash instance
 app = create_dash(server)
 
-
 # Push an application context so we can use Flask's 'current_app'
 with server.app_context():
     # load the rest of our Dash app
@@ -17,3 +18,6 @@ with server.app_context():
 
     # configure the Dash instance's layout
     app.layout = main_layout_header()
+
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        schedule.schedule_init()

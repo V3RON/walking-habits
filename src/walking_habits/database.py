@@ -9,6 +9,7 @@ client = Cloudant.iam('x', 'y',
 
 traces_db = client.create_database('traces')
 patients_db = client.create_database('patients')
+anomalies_db = client.create_database('anomalies')
 
 @atexit.register
 def shutdown():

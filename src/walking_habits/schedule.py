@@ -4,7 +4,11 @@ import schedule
 from datetime import datetime
 from datetime import timedelta
 
-from .database import traces_db, patients_db
+from cloudant.client import Cloudant
+from cloudant.result import Result
+from cloudant.query import Query
+
+from .database import traces_db, patients_db, anomalies_db
 from .settings import REMOVING_TRACES_FREQUENCY, REQUESTS_PATHNAME_PREFIX, PATIENTS, PROBING_FREQUENCY
 
 import requests
@@ -47,15 +51,19 @@ def get_probes():
         del data['id']
         traces_db.create_document(data)
 
+        if contains_anomaly(data['sensors']):
+            print(f'[{datetime.now()}] Saving anomaly trace!')
+            anomalies_db.create_document(data)
 
-t = Thread(target=run_schedule)
-t.start()
+def contains_anomaly(sensors):
+    return any(x['anomaly'] is True for x in sensors)
 
-#schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
-#schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
+def schedule_init():
+    t = Thread(target=run_schedule)
+    t.start()
 
-t = Thread(target=run_schedule)
-t.start()
+    schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
+    schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
 
-print(f'[{datetime.now()}] Fetching patients data...')
-get_patients_data()
+    print(f'[{datetime.now()}] Fetching patients data...')
+    get_patients_data()
