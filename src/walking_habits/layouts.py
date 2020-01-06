@@ -29,14 +29,7 @@ def main_layout_sidebar():
         [
             dbc.Container(
                 fluid=True,
-                children=dbc.Row(
-                    [
-                        dbc.Col(
-                            make_sidebar(className="px-2"), width=2, className="px-0"
-                        ),
-                        dbc.Col(id=server.config["CONTENT_CONTAINER_ID"], width=10),
-                    ]
-                ),
+                children=html.Div(id=server.config["CONTENT_CONTAINER_ID"]),
             ),
             dcc.Location(id=server.config["LOCATION_COMPONENT_ID"], refresh=False),
         ]

@@ -51,8 +51,8 @@ def get_probes():
 t = Thread(target=run_schedule)
 t.start()
 
-schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
-schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
+#schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
+#schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
 
 t = Thread(target=run_schedule)
 t.start()
