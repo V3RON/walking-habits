@@ -5,9 +5,11 @@ from datetime import datetime
 from datetime import timedelta
 
 from .database import traces_db, patients_db
+from .pusher import push_data
 from .settings import REMOVING_TRACES_FREQUENCY, REQUESTS_PATHNAME_PREFIX, PATIENTS, PROBING_FREQUENCY
 
 import requests
+
 
 def call_api(patient):
     response = requests.get(f'http://tesla.iem.pw.edu.pl:9080/v2/monitor/{patient}') 
@@ -29,13 +31,13 @@ def get_patients_data():
 
 def remove_old_traces():
     print(f'[{datetime.now()}] Removing old traces...')
-    current_timestamp = datetime.timestamp(datetime.now() - timedelta(seconds=REMOVING_TRACES_FREQUENCY))
-    query = Query(traces_db, selector = { 'timestamp': { '$lt': current_timestamp }})()
-    doc_count = len(query['docs'])
+    #current_timestamp = datetime.timestamp(datetime.now() - timedelta(seconds=REMOVING_TRACES_FREQUENCY))
+    #query = Query(traces_db, selector = { 'timestamp': { '$lt': current_timestamp }})()
+    #doc_count = len(query['docs'])
 
-    deleted_docs = list(map(lambda doc: { '_id': doc['_id'], '_rev': doc['_rev'], '_deleted': True }, query['docs']))
-    traces_db.bulk_docs(deleted_docs)
-    print(f'[{datetime.now()}] Removed {doc_count} traces')
+    #deleted_docs = list(map(lambda doc: { '_id': doc['_id'], '_rev': doc['_rev'], '_deleted': True }, query['docs']))
+    #traces_db.bulk_docs(deleted_docs)
+    #print(f'[{datetime.now()}] Removed {doc_count} traces')
 
 def get_probes():
     print(f'[{datetime.now()}] Fetching current probes...')
@@ -46,13 +48,14 @@ def get_probes():
         data['timestamp'] = datetime.timestamp(datetime.now())
         del data['id']
         traces_db.create_document(data)
+        push_data(data, idx)
 
 
 t = Thread(target=run_schedule)
 t.start()
 
-#schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
-#schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
+schedule.every(PROBING_FREQUENCY).seconds.do(get_probes)
+schedule.every(REMOVING_TRACES_FREQUENCY).seconds.do(remove_old_traces)
 
 t = Thread(target=run_schedule)
 t.start()

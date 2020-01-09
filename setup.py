@@ -66,6 +66,7 @@ setup(
         "": [
             "assets/favicon.ico",
             "assets/*.css",
+            "assets/js/*.js",
             "assets/*.js",
             "assets/font-awesome/css/*.css",
             "assets/font-awesome/webfonts/*.eot",

@@ -21,6 +21,7 @@ def get_layout(**kwargs):
         ]
     )
 
+
 def get_patient_list():
     cards = []
     for doc in patients_db:
@@ -32,10 +33,16 @@ def get_patient_list():
                         [
                             html.H4(name, className="card-title"),
                             html.P(
-                                'Birthday: {}, disabled: {}'.format(doc['birthdate'], 'yes' if doc['disabled'] == True else 'no'),
+                                'Birthday: {}, disabled: {}'.format(
+                                    doc['birthdate'], 'yes' if doc['disabled'] == True else 'no'),
                                 className="card-text",
                             ),
-                            dbc.Button("See details", className='card-button', color="primary", id='card-{}-button'.format(doc['_id'])),
+                            dbc.Button("See details", className='card-button',
+                                       color="primary", id='card-{}-button'.format(doc['_id'])),
+                            dbc.Button("See live walking", className='card-button', href='/live?id={}'.format(doc['_id']),
+                                       color="primary", id='card-{}-button'.format(doc['_id'])),
+                            dbc.Button("See walking history", className='card-button', href='/history?id={}'.format(doc['_id']),
+                                       color="primary", id='card-{}-button'.format(doc['_id'])),
                         ]
                     ),
                 ]
