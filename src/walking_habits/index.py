@@ -2,7 +2,7 @@ import dash_html_components as html
 
 from .app import app
 from .utils import DashRouter, DashNavBar
-from .pages import patient_list, patient_details
+from .pages import patient_list, patient_details, patient_live, patient_history
 from .components import fa
 
 
@@ -12,7 +12,9 @@ from .components import fa
 urls = (
     ("", patient_list.get_layout),
     ("list", patient_list.get_layout),
-    ("details", patient_details.get_layout)
+    ("details", patient_details.get_layout),
+    ("live", patient_live.get_layout),
+    ("history", patient_history.get_layout)
 )
 
 # Ordered iterable of navbar items: tuples of `(route, display)`, where `route`

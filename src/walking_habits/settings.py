@@ -55,6 +55,6 @@ CONTENT_CONTAINER_ID = "page-content"
 # The ID of the element used to inject the navbar items into
 NAVBAR_CONTAINER_ID = "navbar-items"
 
-PROBING_FREQUENCY = 2
+PROBING_FREQUENCY = 1
 REMOVING_TRACES_FREQUENCY = 10
 PATIENTS = 6

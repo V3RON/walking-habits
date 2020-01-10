@@ -8,10 +8,13 @@ from cloudant.client import Cloudant
 from cloudant.result import Result
 from cloudant.query import Query
 
+from .pusher import push_data
+
 from .database import traces_db, patients_db, anomalies_db
 from .settings import REMOVING_TRACES_FREQUENCY, REQUESTS_PATHNAME_PREFIX, PATIENTS, PROBING_FREQUENCY
 
 import requests
+
 
 def call_api(patient):
     response = requests.get(f'http://tesla.iem.pw.edu.pl:9080/v2/monitor/{patient}') 
@@ -50,6 +53,7 @@ def get_probes():
         data['timestamp'] = datetime.timestamp(datetime.now())
         del data['id']
         traces_db.create_document(data)
+        push_data(data, idx)
 
         if contains_anomaly(data['sensors']):
             print(f'[{datetime.now()}] Saving anomaly trace!')

@@ -1,3 +1,13 @@
 .card-title, .footer-big h4, .footer-big h5, .footer-brand, .info-title, .media .media-heading, .title {
     font-family: Roboto, Helvetica, Arial, sans-serif;
 }
+
+.chart {
+    height: 700px;
+    width: 94%;
+}
+
+.plot {
+    height: 700px;
+    width: 1100px;
+}
