@@ -31,13 +31,13 @@ def get_patients_data():
 
 def remove_old_traces():
     print(f'[{datetime.now()}] Removing old traces...')
-    #current_timestamp = datetime.timestamp(datetime.now() - timedelta(seconds=REMOVING_TRACES_FREQUENCY))
-    #query = Query(traces_db, selector = { 'timestamp': { '$lt': current_timestamp }})()
-    #doc_count = len(query['docs'])
+    current_timestamp = datetime.timestamp(datetime.now() - timedelta(seconds=REMOVING_TRACES_FREQUENCY))
+    query = Query(traces_db, selector = { 'timestamp': { '$lt': current_timestamp }})()
+    doc_count = len(query['docs'])
 
-    #deleted_docs = list(map(lambda doc: { '_id': doc['_id'], '_rev': doc['_rev'], '_deleted': True }, query['docs']))
-    #traces_db.bulk_docs(deleted_docs)
-    #print(f'[{datetime.now()}] Removed {doc_count} traces')
+    deleted_docs = list(map(lambda doc: { '_id': doc['_id'], '_rev': doc['_rev'], '_deleted': True }, query['docs']))
+    traces_db.bulk_docs(deleted_docs)
+    print(f'[{datetime.now()}] Removed {doc_count} traces')
 
 def get_probes():
     print(f'[{datetime.now()}] Fetching current probes...')
