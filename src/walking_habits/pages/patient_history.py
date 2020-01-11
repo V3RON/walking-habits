@@ -9,6 +9,9 @@ from ..database import traces_db, patients_db
 from cloudant.query import Query
 import dash_core_components as dcc
 from datetime import datetime
+from .plots_values import xaxis, yaxis, annotations, shapes, data_scheme, histogram_scheme
+
+import copy
 
 
 def get_layout(**kwargs):
@@ -22,97 +25,103 @@ def get_layout(**kwargs):
     doc = patients_db[id]
     name = '{} {}'.format(doc['firstname'], doc['lastname'])
 
-    i = 0
-    traces = [list() for y in range(6)]
-    time = list()
-
     query = Query(traces_db)
     resp = query(
-        fields=['name','sensors','timestamp'],
-        selector={'$text': 'alek'}
+        fields=['name', 'sensors', 'timestamp'],
+        selector = { 'patient': { '$eq': id }},
+        # sort=[{
+        #    "timestamp:number": "desc"
+        # }],
     )
 
-    for trace in resp['docs']:
+    elems = resp['docs']
+    elems.sort(key=get_timestamp)
+    graph_data = copy.deepcopy(data_scheme)
+    histagram_data = copy.deepcopy(histogram_scheme)
+    for trace in elems:
+        time = datetime.utcfromtimestamp(
+            trace['timestamp']).strftime('%H:%M:%S')
         for sensor in trace['sensors']:
-            traces[sensor['id']].append(sensor['value'])
-        time.append(datetime.utcfromtimestamp(
-            trace['timestamp']).strftime('%d-%m-%Y %H:%M:%S'))
+            graph_data[sensor['id']]['y'].append(sensor['value'])
+            histagram_data[sensor['id']]['x'].append(sensor['value'])
+            if sensor['anomaly']:
+                graph_data[sensor['id'] + 6]['x'].append(time)
+                graph_data[sensor['id'] + 6]['y'].append(sensor['value'])
+            graph_data[sensor['id']]['x'].append(time)
 
-    print(traces)
     return html.Div(
         [
-            html.Div(
+            dbc.Row(
                 [
-                    html.H1(name),
-                    dbc.Badge("Disabled", color="primary",
-                              className="mr-1") if doc['disabled'] is True else None,
+                    dbc.Col(
+                        dcc.Graph(
+                            id="feetsensors_location_plot",
+                            figure=dict(
+                                data=[],
+                                layout=dict(
+                                    title='Feet sensors location',
+                                    xaxis=xaxis,
+                                    yaxis=yaxis,
+                                    images=[dict(
+                                        source="https://i.ibb.co/B42H62v/faa2800fca9a21ede757616d49a94fa9-right-foot-hollow-clip-art-at-clkercom-vector-clip-art-online-800-600.png",
+                                        xref="x",
+                                        yref="y",
+                                        x=0,
+                                        y=5,
+                                        sizex=20,
+                                        sizey=20,
+                                        sizing="stretch",
+                                        opacity=1.0,
+                                        layer="below"
+                                    )],
+                                    shapes=shapes,
+                                    annotations=annotations
+                                )
+                            ),
+                            style={
+                                'height': 400,
+                                'width': 800,
+                                'margin-top': 40,
+                            }
+                        )
+                    ),
+                    dbc.Col(
+                        dcc.Graph(
+                            figure=dict(
+                                data=graph_data,
+                                layout=dict(
+                                    title='Walking trace history',
+                                    showlegend=True,
+                                    legend=dict(
+                                        x=0,
+                                        y=1.0
+                                    ),
+                                    margin=dict(l=40, r=0, t=40, b=100)
+                                )
+                            ),
+                            style={
+                                'height': 600,
+                                'width': 1000,
+                                'margin-top': 40,
+                            }
+                        )
+                    ),
+                    dcc.Graph(
+                        id='basic-interactions',
+                        figure=dict(
+                            data=histagram_data,
+                            layout=dict(
+                                title='Sensors values histogram',
+                                #barmode='overlay'
+                            )
+                        )
+                    ),
                 ]
             ),
-            dcc.Graph(
-                id="feet_plot",
-                figure=dict(
-                    data=[
-                        dict(
-                            x=time,
-                            y=traces[0],
-                            name='Sensor L1',
-                            # marker=dict(
-                            #    color='rgb(55, 83, 109)'
-                            # )
-                        ),
-                        dict(
-                            x=time,
-                            y=traces[1],
-                            name='Sensor L2',
-                            # marker=dict(
-                            #    color='rgb(26, 118, 255)'
-                            # )
-                        ),
-                        dict(
-                            x=time,
-                            y=traces[2],
-                            name='Sensor L3',
-                            # marker=dict(
-                            #    color='rgb(55, 83, 109)'
-                            # )
-                        ),
-                        dict(
-                            x=time,
-                            y=traces[3],
-                            name='Sensor R1',
-                            # marker=dict(
-                            #    color='rgb(26, 118, 255)'
-                            # )
-                        ),
-                        dict(
-                            x=time,
-                            y=traces[4],
-                            name='Sensor R2',
-                            # marker=dict(
-                            #    color='rgb(55, 83, 109)'
-                            # )
-                        ),
-                        dict(
-                            x=time,
-                            y=traces[5],
-                            name='Sensor R3',
-                            # marker=dict(
-                            #    color='rgb(26, 118, 255)'
-                            # )
-                        )
-                    ],
-                    layout=dict(
-                        title='Still TODO',
-                        showlegend=True,
-                        legend=dict(
-                            x=0,
-                            y=1.0
-                        ),
-                        margin=dict(l=40, r=0, t=40, b=30)
-                    )
-                ),
-                #style={'height': 300},
-            )
 
         ]
     )
+
+
+def get_timestamp(e):
+    return float(e['timestamp'])
