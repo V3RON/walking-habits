@@ -1,0 +1,347 @@
+@import "https://fonts.googleapis.com/css?family=Lato&display=swap";
+
+body,
+.h1,
+.h2,
+.h3,
+.h4,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Lato, Roboto, sans-serif !important;
+}
+
+h1.page-title {
+  font-size: 1.5rem;
+}
+
+#header {
+  border-radius: 0;
+  background-color: white !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;
+}
+
+#header header.brand {
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 760px) {
+  #header header.brand {
+    margin: 0;
+    margin-left: 2rem;
+  }
+}
+
+#header header.brand a h1 {
+  color: #3d4465 !important;
+  font-size: 1.2rem;
+  display: inline;
+  padding: 0;
+  margin: 0;
+}
+
+#header header.brand a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#header header.brand a #logotype img {
+  height: 3rem;
+  margin-right: 1rem;
+
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(86, 70, 255, 0.4);
+  animation: pulse 2s infinite;
+  border-radius: 50%;
+}
+
+body {
+  background-color: #f4f7fd;
+}
+
+h1 {
+  color: #3d4465;
+}
+
+/*
+    HOME PAGE
+*/
+
+.card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  position: relative;
+}
+
+.card-corner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.card-image {
+  height: 4rem;
+  margin: 0 auto 1.5rem auto;
+  display: block;
+}
+
+.card-body {
+  padding-bottom: 5rem !important;
+}
+
+.card .card-title {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.card.disabled .card-corner::after {
+  content: "\f193";
+  font-family: "Font Awesome 5 Pro";
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-weight: 900;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: white;
+  padding-bottom: 0.7rem;
+  padding-top: 4rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  background: #5646ff;
+  font-size: 1rem;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.card .card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  padding: 0 !important;
+  margin: 0;
+}
+
+.card-text {
+  text-align: center;
+  color: #a5b2c4;
+}
+
+.card-text i {
+  margin-right: 0.2rem;
+}
+
+.card-button.btn.btn-primary {
+  background-color: #3d4465;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 0;
+  width: 50%;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card-button.btn.btn-primary:hover {
+  background-color: #5646ff;
+  box-shadow: 0 14px 28px rgba(86, 70, 255, 0.25),
+    0 10px 10px rgba(86, 70, 255, 0.22);
+}
+
+.card-button.btn.btn-primary:nth-of-type(1) {
+  border-right: #5646ff;
+}
+
+/*
+ANIMATION
+*/
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(86, 70, 255, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(86, 70, 255, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(86, 70, 255, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(88, 87, 83, 0.4);
+    box-shadow: 0 0 0 0 rgba(86, 70, 255, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(86, 70, 255, 0);
+    box-shadow: 0 0 0 10px rgba(86, 70, 255, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(86, 70, 255, 0);
+    box-shadow: 0 0 0 0 rgba(86, 70, 255, 0);
+  }
+}
+
+:-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5646ff;
+}
+
+/*
+    LOADING
+*/
+
+._dash-loading {
+  color: transparent;
+}
+
+._dash-loading::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100px;
+  width: 100px;
+  margin: -50px 0 0 -50px;
+  border: 4px rgba(61, 68, 101, 0.25) solid;
+  border-top: 4px #5646ff solid;
+  border-radius: 50%;
+  -webkit-animation: spin2 1s infinite linear;
+  animation: spin2 1s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+
+/*
+** CARD WITH TITLE
+*/
+
+.card-bg-title {
+  padding: 1rem;
+  color: white;
+  font-size: 1.2rem;
+  background: #5646ff;
+  border-radius: 6px 6px 0 0;
+}
+
+.page-card-header {
+  margin-top: 0 !important;
+  border-radius: 6px;
+}
+
+.page-card-header .card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 0.9375rem 1.875rem !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .page-card-header .card-body {
+    flex-direction: row;
+  }
+}
+
+.page-card-header .card-body h2 {
+  color: #3d4465;
+  margin: 0;
+  margin-left: 2rem;
+}
+
+.page-card-header:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.page-card-header .btn-group button {
+  background-color: #3d4465;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 0;
+  width: 50%;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.page-card-header .btn-group button:hover,
+.page-card-header .btn-group button:focus {
+  background-color: #5646ff !important;
+  box-shadow: 0 14px 28px rgba(86, 70, 255, 0.25),
+    0 10px 10px rgba(86, 70, 255, 0.22);
+  color: white !important;
+}
+
+.page-card-header .btn-group button:nth-of-type(1) {
+  border-right: #5646ff;
+}
+
+.page-card-header .btn-group button.active {
+  background-color: #5646ff !important;
+}
+
+.feet_plot_live {
+  height: 600px;
+}
+
+@media only screen and (min-width: 850px) {
+  .feet_plot_live {
+    height: 800px;
+  }
+}

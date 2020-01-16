@@ -4,7 +4,7 @@ REQUESTS_PATHNAME_PREFIX = None
 ROUTES_PATHNAME_PREFIX = None
 
 EXTERNAL_STYLESHEETS = [
-    'http://localhost:81/custom_styles.css'
+    'assets/custom_styles.css'
 ]
 
 EXTERNAL_SCRIPTS = [
