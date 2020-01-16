@@ -6,14 +6,9 @@ from .utils import get_dash_args_from_flask_config
 
 
 def create_flask(config_object=f"{__package__}.settings"):
-    """Create the Flask instance for this application"""
     server = Flask(__package__)
-
-    # load default settings
     server.config.from_object(config_object)
 
-    # load additional settings that will override the defaults in settings.py. eg
-    # $ export WALKING_HABITS_SETTINGS=/some/path/prod_settings.py
     server.config.from_envvar(
         "WALKING_HABITS_SETTINGS", silent=True
     )
@@ -22,18 +17,16 @@ def create_flask(config_object=f"{__package__}.settings"):
 
 
 def create_dash(server):
-    """Create the Dash instance for this application"""
     app = Dash(
         name=__package__,
         server=server,
         suppress_callback_exceptions=True,
+        meta_tags=[
+            {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+        ],
         **get_dash_args_from_flask_config(server.config)
     )
 
-    # Update the Flask config a default "TITLE" and then with any new Dash
-    # configuration parameters that might have been updated so that we can
-    # access Dash config easily from anywhere in the project with Flask's
-    # 'current_app'
     server.config.setdefault("TITLE", "Dash")
     server.config.update({key.upper(): val for key, val in app.config.items()})
 

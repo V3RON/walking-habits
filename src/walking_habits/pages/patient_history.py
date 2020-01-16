@@ -7,7 +7,6 @@ import visdcc
 from ..app import app
 from ..database import traces_db, patients_db
 from cloudant.query import Query
-import dash_core_components as dcc
 from datetime import datetime
 from .plots_values import xaxis, yaxis, annotations, shapes, data_scheme, histogram_scheme
 
@@ -28,10 +27,7 @@ def get_layout(**kwargs):
     query = Query(traces_db)
     resp = query(
         fields=['name', 'sensors', 'timestamp'],
-        selector = { 'patient': { '$eq': id }},
-        # sort=[{
-        #    "timestamp:number": "desc"
-        # }],
+        selector={'patient': {'$eq': id}},
     )
 
     elems = resp['docs']
@@ -51,46 +47,26 @@ def get_layout(**kwargs):
 
     return html.Div(
         [
+            dbc.Card(
+                dbc.CardBody([
+                    html.Div(className='card-corner'),
+                    html.H2(name),
+                    dbc.ButtonGroup([
+                        dbc.Button("History", className='active'),
+                        dbc.Button(
+                            "Online", href='/live?id={}'.format(doc['_id'])),
+                    ])
+                ]), className='page-card-header disabled' if doc['disabled'] == True else 'page-card-header',
+            ),
             dbc.Row(
-                [
-                    dbc.Col(
-                        dcc.Graph(
-                            id="feetsensors_location_plot",
-                            figure=dict(
-                                data=[],
-                                layout=dict(
-                                    title='Feet sensors location',
-                                    xaxis=xaxis,
-                                    yaxis=yaxis,
-                                    images=[dict(
-                                        source="https://i.ibb.co/B42H62v/faa2800fca9a21ede757616d49a94fa9-right-foot-hollow-clip-art-at-clkercom-vector-clip-art-online-800-600.png",
-                                        xref="x",
-                                        yref="y",
-                                        x=0,
-                                        y=5,
-                                        sizex=20,
-                                        sizey=20,
-                                        sizing="stretch",
-                                        opacity=1.0,
-                                        layer="below"
-                                    )],
-                                    shapes=shapes,
-                                    annotations=annotations
-                                )
-                            ),
-                            style={
-                                'height': 400,
-                                'width': 800,
-                                'margin-top': 40,
-                            }
-                        )
-                    ),
-                    dbc.Col(
+                dbc.Col(
+                    html.Div(className='card', children=[
+                        html.Div(className='card-bg-title',
+                                 children='Walking trace history'),
                         dcc.Graph(
                             figure=dict(
                                 data=graph_data,
                                 layout=dict(
-                                    title='Walking trace history',
                                     showlegend=True,
                                     legend=dict(
                                         x=0,
@@ -98,24 +74,54 @@ def get_layout(**kwargs):
                                     ),
                                     margin=dict(l=40, r=0, t=40, b=100)
                                 )
-                            ),
-                            style={
-                                'height': 600,
-                                'width': 1000,
-                                'margin-top': 40,
-                            }
-                        )
-                    ),
-                    dcc.Graph(
-                        id='basic-interactions',
-                        figure=dict(
-                            data=histagram_data,
-                            layout=dict(
-                                title='Sensors values histogram',
-                                #barmode='overlay'
                             )
                         )
+                    ])
+                )
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        html.Div(className='card', children=[
+                            html.Div(className='card-bg-title',
+                                     children='Feet sensors location'),
+                            dcc.Graph(
+                                id="feetsensors_location_plot",
+                                figure=dict(
+                                    data=[],
+                                    layout=dict(
+                                        xaxis=xaxis,
+                                        yaxis=yaxis,
+                                        images=[dict(
+                                            source="https://i.ibb.co/B42H62v/faa2800fca9a21ede757616d49a94fa9-right-foot-hollow-clip-art-at-clkercom-vector-clip-art-online-800-600.png",
+                                            xref="x",
+                                            yref="y",
+                                            x=0,
+                                            y=5,
+                                            sizex=20,
+                                            sizey=20,
+                                            sizing="stretch",
+                                            opacity=1.0,
+                                            layer="below"
+                                        )],
+                                        shapes=shapes,
+                                        annotations=annotations
+                                    )
+                                )
+                            )
+                        ])
                     ),
+                    dbc.Col(
+                        html.Div(className='card', children=[
+                            html.Div(className='card-bg-title',
+                                     children='Sensors values histogram'),
+                            dcc.Graph(
+                                figure=dict(
+                                    data=histagram_data,
+                                )
+                            )
+                        ])
+                    )
                 ]
             ),
 

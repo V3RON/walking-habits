@@ -17,7 +17,7 @@ def make_brand(**kwargs):
         className="brand",
         children=dcc.Link(
             href=get_url(""),
-            children=html.H1([fa("fas fa-walking mr-4 ml-4"), server.config["TITLE"]]),
+            children=[html.Div(children=html.Img(src='assets/logo.svg'),id='logotype'), html.H1(server.config["TITLE"])],
         ),
         **kwargs,
     )

@@ -11,10 +11,15 @@ from ..app import app
 from ..database import patients_db
 
 
+def fa(className):
+    """A convenience component for adding Font Awesome icons"""
+    return html.I(className=className)
+
+
 def get_layout(**kwargs):
     return html.Div(
         [
-            html.H1('Patient list'),
+            html.H1(className='page-title', children='Patients'),
             dbc.Row(
                 get_patient_list()
             )
@@ -26,27 +31,25 @@ def get_patient_list():
     cards = []
     for doc in patients_db:
         name = '{} {}'.format(doc['firstname'], doc['lastname'])
-        card = html.A(
-            dbc.Card(
-                [
-                    dbc.CardBody(
-                        [
-                            html.H4(name, className="card-title"),
-                            html.P(
-                                'Birthday: {}, disabled: {}'.format(
-                                    doc['birthdate'], 'yes' if doc['disabled'] == True else 'no'),
-                                className="card-text",
-                            ),
-                            dbc.Button("See details", className='card-button',
-                                       color="primary", id='card-{}-button'.format(doc['_id'])),
-                            dbc.Button("See live walking", className='card-button', href='/live?id={}'.format(doc['_id']),
-                                       color="primary", id='card-{}-button'.format(doc['_id'])),
-                            dbc.Button("See walking history", className='card-button', href='/history?id={}'.format(doc['_id']),
-                                       color="primary", id='card-{}-button'.format(doc['_id'])),
-                        ]
-                    ),
-                ]
-            ), href='/details?id={}'.format(doc['_id'])
+        card = dbc.Card(className='disabled' if doc['disabled'] == True else None,
+                     children=[
+                dbc.CardBody(
+                    [
+                        html.Div(className='card-corner'),
+                        html.Img(className='card-image',
+                                 src='assets/avatar.jpg'),
+                        html.H4(name, className="card-title"),
+                        html.P(children=[
+                            fa("fas fa-birthday-cake"), doc['birthdate']], className="card-text"),
+                    ]
+                ),
+                html.Div(className='card-footer', children=[
+                    dbc.Button("Live", className='card-button', href='/live?id={}'.format(doc['_id']),
+                                   color="primary"),
+                    dbc.Button("History", className='card-button', href='/history?id={}'.format(doc['_id']),
+                               color="primary"),
+                ])
+            ]
         )
-        cards.append(dbc.Col(card, width=3))
+        cards.append(dbc.Col(card, sm=12, md=4, lg=3))
     return cards
