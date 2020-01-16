@@ -1,0 +1,11 @@
+cloudant==2.12.0
+dash==1.7.0
+requests==2.21.0
+dash_bootstrap_components==0.8.0
+dash_core_components==1.6.0
+Flask==1.1.1
+dash_html_components==1.0.2
+Click==7.0
+Werkzeug==0.16.0
+plotly==4.4.1
+visdcc==0.0.40
