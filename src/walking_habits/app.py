@@ -13,5 +13,5 @@ with server.app_context():
 
     app.layout = main_layout_header()
 
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-        schedule.schedule_init()
+    #if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+    schedule.schedule_init()
